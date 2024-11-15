@@ -24,7 +24,7 @@ Enlaces y documentacion para revisar: https://www.gnu.org/software/bash/manual/b
 
 
 
-Minishell debe:
+# Minishell debe: 
 *****************************************************
 Mostrar una entrada mientras espera un comando nuevo.
 
@@ -67,10 +67,10 @@ export sin opciones.
 unset sin opciones.
 env sin opciones o argumentos.
 exit sin opciones.
+*************************************************************************************************************************************************
 
 
-#################################################################
-Proceso
+# Proceso
 *************************************************************************************************
 Utilizamos la libreria readline de GNU que ya está permitido su uso. ver manual.
 Esta libreria, a su vez, nos proporciona el historial que solicita la consigna.
@@ -110,7 +110,7 @@ brew install readline
 Ejecuta la minishel
 ./minishell
 
-Documentación
+# Documentación
 ***************************************
 BASH manual https://www.academia.edu/33910321/Manual_0_6_MAS_COMPLEO_BASH
 
