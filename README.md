@@ -69,7 +69,7 @@ env sin opciones o argumentos.
 exit sin opciones.
 
 
-
+#################################################################
 Proceso
 *************************************************************************************************
 Utilizamos la libreria readline de GNU que ya está permitido su uso. ver manual.
