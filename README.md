@@ -19,4 +19,6 @@ A continuación se describe brevemente el funcionamiento del shell cuando lee y 
 
 7) Opcionalmente, espera a que el comando finalice y recoge su estado de salida (consulte Estado de salida).
 
+Enlaces y documentacion para revisar: https://www.gnu.org/software/bash/manual/bash.html#Shell-Operation
+
 
