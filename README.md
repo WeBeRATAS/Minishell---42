@@ -116,3 +116,8 @@ BASH manual https://www.academia.edu/33910321/Manual_0_6_MAS_COMPLEO_BASH
 
 GNU readline https://tiswww.case.edu/php/chet/readline/rltop.html
 
+# Autores de este pedazo de tutorial, dos grandes
+Autores
+@Fefeco
+@Daviichii89
+
