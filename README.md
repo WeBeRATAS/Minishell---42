@@ -88,7 +88,7 @@ Redirecciones y liberación de memoria
 Una vez hecho el fork() libramos todas las estructuras en memoria del proceso hijo y duplicamos los file descriptors en caso de haber redirecciones.
 
 Ejecución
-Por último, ejecutamos uno a uno todos los nodos que generamos, liberamos memoria, cerramos file descriptors y lanzamos el prompt esperando la nueva senencia a ejecutar.
+Por último, ejecutamos uno a uno todos los nodos que generamos, liberamos memoria, cerramos file descriptors y lanzamos el prompt esperando la nueva secuencia a ejecutar.
 
 *****************************************************************
 Uso
