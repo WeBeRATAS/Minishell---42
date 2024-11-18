@@ -71,6 +71,10 @@ exit sin opciones.
 
 # Proceso
 *************************************************************************************************
+
+![193665518-0c0c7fec-38a9-4f6c-91ca-fef606abfb0d](https://github.com/user-attachments/assets/080ed608-980c-4c97-875b-f51d5f63b6dd)
+
+
 Recomendamos leer el manual de bash (https://www.gnu.org/software/bash/manual/html_node/index.html)  y dividir el proyecto en fases tal y como se menciona en la sección shell operation (https://www.gnu.org/software/bash/manual/html_node/Shell-Operation.html)
 
 Reads its input from a file (see Shell Scripts), from a string supplied as an argument to the -c invocation option (see Invoking Bash), or from the user’s terminal.
@@ -128,6 +132,8 @@ BASH manual https://www.academia.edu/33910321/Manual_0_6_MAS_COMPLEO_BASH
 GNU readline https://tiswww.case.edu/php/chet/readline/rltop.html
 
 Para consultar las funciones necesarias y sus librerias para importar en minishell.h https://man7.org/linux/man-pages/dir_section_3.html
+
+Documentacion estructura minishell: https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf
 
 # Autores de este pedazo de tutorial, dos grandes
 Autores
