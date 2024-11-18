@@ -82,13 +82,22 @@ exit sin opciones.
 
 Recomendamos leer el manual de bash (https://www.gnu.org/software/bash/manual/html_node/index.html)  y dividir el proyecto en fases tal y como se menciona en la sección shell operation (https://www.gnu.org/software/bash/manual/html_node/Shell-Operation.html)
 
-Reads its input from a file (see Shell Scripts), from a string supplied as an argument to the -c invocation option (see Invoking Bash), or from the user’s terminal.
-Breaks the input into words and operators, obeying the quoting rules described in Quoting. These tokens are separated by metacharacters. Alias expansion is performed by this step (see Aliases).
-Parses the tokens into simple and compound commands (see Shell Commands).
-Performs the various shell expansions (see Shell Expansions), breaking the expanded tokens into lists of filenames (see Filename Expansion) and commands and arguments.
-Performs any necessary redirections (see Redirections) and removes the redirection operators and their operands from the argument list.
-Executes the command (see Executing Commands).
-Optionally waits for the command to complete and collects its exit status (see Exit Status).
+Lee su entrada de un archivo (ver Shell Scripts), de una cadena suministrada como argumento a la opción de invocación -c (ver Invocando Bash), o de la terminal del usuario.
+
+Divide la entrada en palabras y operadores, obedeciendo las reglas de entrecomillado descritas en Entrecomillado. Estos tokens están separados por metacaracteres. 
+
+La expansión de alias se realiza en este paso (ver Aliases). Convierte los tokens en comandos simples y compuestos (véase Comandos del shell).
+
+Realiza las distintas expansiones del intérprete de comandos (consulte Expansiones del intérprete de comandos), dividiendo los tokens expandidos en listas de nombres de archivo (consulte Expansión de nombres de archivo) y comandos y argumentos. 
+
+Realiza las redirecciones necesarias (ver Redirecciones) y elimina los operadores de redirección y sus operandos de la lista de argumentos. 
+
+Ejecuta el comando (consulte Ejecución de comandos). 
+
+Opcionalmente, espera a que el comando finalice y recoge su estado de salida (consulte Estado de salida).
+
+
+Traducción realizada con la versión gratuita del traductor DeepL.com
 
 ![193665518-0c0c7fec-38a9-4f6c-91ca-fef606abfb0d](https://github.com/user-attachments/assets/080ed608-980c-4c97-875b-f51d5f63b6dd)
 
