@@ -72,8 +72,6 @@ exit sin opciones.
 # Proceso
 *************************************************************************************************
 
-![193665518-0c0c7fec-38a9-4f6c-91ca-fef606abfb0d](https://github.com/user-attachments/assets/080ed608-980c-4c97-875b-f51d5f63b6dd)
-
 
 Recomendamos leer el manual de bash (https://www.gnu.org/software/bash/manual/html_node/index.html)  y dividir el proyecto en fases tal y como se menciona en la sección shell operation (https://www.gnu.org/software/bash/manual/html_node/Shell-Operation.html)
 
@@ -84,6 +82,8 @@ Performs the various shell expansions (see Shell Expansions), breaking the expan
 Performs any necessary redirections (see Redirections) and removes the redirection operators and their operands from the argument list.
 Executes the command (see Executing Commands).
 Optionally waits for the command to complete and collects its exit status (see Exit Status).
+
+![193665518-0c0c7fec-38a9-4f6c-91ca-fef606abfb0d](https://github.com/user-attachments/assets/080ed608-980c-4c97-875b-f51d5f63b6dd)
 
 # Lectura del input
 Utilizamos la libreria readline de GNU que ya está permitido su uso. ver manual: https://tiswww.case.edu/php/chet/readline/rltop.html
@@ -105,6 +105,116 @@ Una vez hecho el fork() libramos todas las estructuras en memoria del proceso hi
 Por último, ejecutamos uno a uno todos los nodos que generamos, liberamos memoria, cerramos file descriptors y lanzamos el prompt esperando la nueva secuencia a ejecutar.
 
 *****************************************************************
+
+# Mas informacion de los procesos a realizar
+
+Implementación
+
+El programa se ejecuta sin argumentos (y arrojará un error si se utiliza alguno). El programa consta esencialmente de dos funciones que se llaman entre sí indefinidamente. La primera minishell_looprealiza las funciones de minishell, la otra limpia y prepara la siguiente línea. En minishell_loop, aparece un símbolo del sistema, que se implementa a través de readline . Esto también nos permitió usar la función history incorporada. Una vez que se ha ingresado una línea, verifica si hay comillas sin cerrar. Si no encuentra ninguna, envía la línea al analizador léxico.
+
+El analizador léxico
+
+El analizador léxico, también llamado tokenizador, toma como entrada la línea ingresada. Luego lee la línea palabra por palabra, utilizando espacios en blanco como delimitadores. Primero verifica si la palabra es un token o no, es decir: |, <, <<, >, o >>, y en caso contrario asume que es una palabra. Luego la agrega a la siguiente lista enlazada:
+
+typedef struct s_lexer
+{
+	char    	*str;
+	t_tokens        token;
+	int		i;
+	struct s_lexer	*next;
+	struct s_lexer	*prev;
+}	t_lexer;
+
+
+Cada nodo contiene un char *que contiene la palabra o un t_token. También asignamos a cada nodo un índice para que podamos eliminarlos fácilmente más tarde.
+
+# El analizador
+
+Luego, el analizador léxico se envía al analizador, que agrupa los distintos nodos en función de los tokens. Cada grupo se convierte en un comando.
+
+typedef struct s_simple_cmds
+{
+	char                    **str;
+	int                     (*builtin)(t_tools *, struct s_simple_cmds *);
+	int                     num_redirections;
+	char                    *hd_file_name;
+	t_lexer                 *redirections;
+	struct s_simple_cmds	*next;
+	struct s_simple_cmds	*prev;
+}	t_simple_cmds;
+
+![194295673-3c9e17c3-d5ab-40dc-82ef-72b909f4acb3](https://github.com/user-attachments/assets/2dd5b9e8-41a0-47d5-8b1a-c7e3e522b2d5)
+
+Lo primero que hace el analizador es recorrer la lista del analizador léxico hasta que encuentra una tubería. Luego, toma todos los nodos anteriores a la tubería como un solo comando y crea un nodo en la t_simple_cmdsestructura. Si no encuentra una tubería, toma todos los nodos (restantes) como un solo comando.
+
+analizador 001 El analizador toma la t_lexerlista (izquierda) y la convierte en la t_simple_cmdslista (derecha)
+
+Para cada comando, primero comprueba si hay redirecciones, que almacena en la *redirectionslista enlazada, que contiene tanto el token como el nombre de archivo o delimitador en el caso de un documento heredado. Cuando se añaden los nodos a la *redirectionslista, se eliminan de la lista del analizador léxico. A continuación, comprueba si la primera palabra es una función incorporada, en cuyo caso almacena un puntero de función a la función correspondiente, más sobre esto a continuación. Como las redirecciones se han eliminado de la lista del analizador léxico, el analizador puede combinar fácilmente todas las palabras restantes en una matriz 2D, que es un argumento ejecutivo obligatorio. También facilita el manejo de situaciones en las que las palabras pueden estar separadas por redirecciones, por ejemplo:
+
+cat > file -e
+Como >y fileya se eliminaron de la lista del analizador léxico cuando se agregaron a la lista de redirecciones, todo lo que queda es caty -e, que luego se pueden agregar fácilmente a una matriz.
+
+Este proceso se repite hasta el final de la lista del analizador léxico.
+
+# Elementos incorporados
+Como se explicó anteriormente, manejamos las funciones incorporadas almacenando un puntero de función en el t_simple_cmds. Esto lo logramos enviando la primera palabra de un comando a una función builtin_arrque recorre una matriz estática de las diferentes funciones incorporadas. Si encuentra una función correspondiente, la devuelve al analizador; de lo contrario, devuelve NULL. Para mí, esta fue una forma de aprender sobre punteros de función, con los que nunca había trabajado antes. Además, al determinar la función incorporada en la etapa del analizador, simplifica enormemente el ejecutor, ya que ejecutar la función incorporada requiere solo dos líneas de código:
+
+if (cmd->builtin != NULL)
+  cmd->builtin(tools, cmd);
+  
+# Las funciones incorporadas (según el tema) son:
+** cd	Cambia el directorio de trabajo del entorno de ejecución del shell actual y actualiza las variables de entorno PWDy OLDPWD.
+  Sin argumentos, cambia el directorio de trabajo al directorio de inicio.
+  -cambia el directorio al OLDPWD.
+
+** echo	Muestra una línea de texto.
+  Bandera opcional -n: no mostrar la nueva línea final.
+
+** env	Muestra las variables de entorno
+
+** exit	Finaliza el shell.
+  Acepta el argumento opcional n, que establece el estado de salida en n.
+
+** export	Acepta argumentos name[=value].
+  Agrega nombre al entorno. Establece el valor de nombre en value.
+  Si no se proporciona ningún argumento, muestra una lista de variables exportadas.
+
+** pwd	Muestra el directorio actual como una ruta absoluta.
+
+** unset	Acepta el argumento name.
+  Elimina la variable name del entorno.
+
+# Ejecutor
+Cuando el analizador devuelve la t_simple_cmds lista a minishell_loop, se realiza una comprobación sencilla para determinar cuántos comandos hay, ya que son manejados por diferentes funciones. Sin embargo, con la excepción de unas pocas funciones integradas, los comandos son ejecutados en última instancia por la misma función handle_cmd, que encuentra y, si tiene éxito, ejecuta el comando.
+
+# Expansor
+Antes de que se maneje un nodo t_simple_cmds, se lo expande. El expansor toma las variables, identificadas por $, y las reemplaza con su valor de las variables de entorno. De modo que $USERse convierte en mgraaf, y $?se reemplaza con el código de salida.
+
+# Heredoc
+Antes de crear un proceso secundario, el proceso principal ejecuta heredocs. Nosotros manejamos heredocs creando un archivo temporal para escribir la entrada. El nombre del archivo se almacena en el t_simple_cmdsnodo relacionado para que pueda usarse para reemplazar STDIN. Si hay varios heredocs en un solo t_simple_cmdsnodo, entonces el nombre del archivo que se almacena finalmente será el del último heredoc. El uso de un archivo tiene limitaciones y problemas de seguridad, sin embargo, sentimos que era la forma más simple de lidiar con esto y es similar a cómo lo hace bash.
+
+# Comando único
+Al igual que en bash, los comandos integrados, específicamente cd, exit, export, y unsetno se pueden ejecutar en un proceso separado, ya que entonces la variable ambiental no se puede alterar adecuadamente. Si solo hay un comando, y es uno de los comandos integrados mencionados anteriormente, se ejecuta en el proceso padre y la función regresa a minishell_loop. Si el comando no es un comando integrado, la función de comando único crea un nuevo proceso y envía el comando a handle_cmd.
+
+Comandos múltiples
+Si hay varios comandos, el ejecutor recorre cada t_simple_cmdsnodo y crea un proceso secundario para él mediante fork(), y mediante pipe()crea una tubería para enviar la salida de un comando como entrada al siguiente. Consulta pipex para obtener más información sobre estas funciones.
+
+Básicamente para cada comando sucede lo siguiente:
+
+El comando se expande.
+Se crea una tubería(pipe) con end[0]y end[1], excepto el último comando.
+Se crea un proceso secundario fork(). En el proceso secundario:
+Con excepción del primer comando, dup2reemplaza STDINcon la salida del comando anterior.
+Con excepción del último comando, dup2reemplaza STDOUTcon end[1].
+En el caso de redirecciones, el STDINo STDOUTse reemplaza con sus respectivos descriptores de archivo.
+handle_cmdEncuentra y ejecuta el comando.
+end[0]se almacena para el siguiente comando.
+Luego, el proceso padre espera a que todos los hijos finalicen y luego regresa al minishell_loop.
+
+# Reiniciar
+Luego, el programa realiza un reinicio completo, liberando todos los nodos que aún no han sido liberados o eliminados, y restablece varias variables para que el programa pueda comenzar nuevamente mostrando un nuevo mensaje.
+
+*********************************************************************************************
 
 # Uso
 Clona el repositorio
