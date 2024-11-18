@@ -23,7 +23,6 @@ Enlaces y documentacion para revisar: https://www.gnu.org/software/bash/manual/b
 
 
 
-
 # Minishell debe: 
 *****************************************************
 Mostrar una entrada mientras espera un comando nuevo.
@@ -72,26 +71,38 @@ exit sin opciones.
 
 # Proceso
 *************************************************************************************************
-Utilizamos la libreria readline de GNU que ya está permitido su uso. ver manual.
+Recomendamos leer el manual de bash (https://www.gnu.org/software/bash/manual/html_node/index.html)  y dividir el proyecto en fases tal y como se menciona en la sección shell operation (https://www.gnu.org/software/bash/manual/html_node/Shell-Operation.html)
+
+Reads its input from a file (see Shell Scripts), from a string supplied as an argument to the -c invocation option (see Invoking Bash), or from the user’s terminal.
+Breaks the input into words and operators, obeying the quoting rules described in Quoting. These tokens are separated by metacharacters. Alias expansion is performed by this step (see Aliases).
+Parses the tokens into simple and compound commands (see Shell Commands).
+Performs the various shell expansions (see Shell Expansions), breaking the expanded tokens into lists of filenames (see Filename Expansion) and commands and arguments.
+Performs any necessary redirections (see Redirections) and removes the redirection operators and their operands from the argument list.
+Executes the command (see Executing Commands).
+Optionally waits for the command to complete and collects its exit status (see Exit Status).
+
+# Lectura del input
+Utilizamos la libreria readline de GNU que ya está permitido su uso. ver manual: https://tiswww.case.edu/php/chet/readline/rltop.html
 Esta libreria, a su vez, nos proporciona el historial que solicita la consigna.
 
-Análisis lexicológico
+# Análisis lexicológico
 Esta etapa consiste en identificar tokens. Leemos caracter a caracter la línea que obtubimos en el paso anterior y guardamos en una estructura clasificando en word o token siguiendo las reglas de encomillado de bash.
 
-Análisis sintáctico
+# Análisis sintáctico
 La lista de nodos generada por el paso anterior se libera y se generan nuevos nodos para la instancia de ejecución. Aquí también, revisamos si hay redirecciones y generamos los file descriptors para cada uno de los procesos que vayamos a ejecutar más adelante. Cada nodo que generemos es el conjunto de word y token hasta llegar a un PIPE en caso de encontrar uno.
 
-Expansiones
+# Expansiones
 Antes de enviar la lista de nodos al ejecutor hay que realizar las expansiones necesarias de acuerdo a las reglas de encomillado de bash.
 
-Redirecciones y liberación de memoria
+# Redirecciones y liberación de memoria
 Una vez hecho el fork() libramos todas las estructuras en memoria del proceso hijo y duplicamos los file descriptors en caso de haber redirecciones.
 
-Ejecución
+# Ejecución
 Por último, ejecutamos uno a uno todos los nodos que generamos, liberamos memoria, cerramos file descriptors y lanzamos el prompt esperando la nueva secuencia a ejecutar.
 
 *****************************************************************
-Uso
+
+# Uso
 Clona el repositorio
 git clone ... minishell
 Compila el proyecto con make
