@@ -59,6 +59,7 @@ ctrl-D termina el shell.
 ctrl-\ no hace nada.
 
 Deberá implementar los built-ins:
+*****************************************
 echo con la opción -n.
 
 cd solo con una ruta relativa o absoluta.
