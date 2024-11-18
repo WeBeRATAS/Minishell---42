@@ -60,11 +60,17 @@ ctrl-\ no hace nada.
 
 Deberá implementar los built-ins:
 echo con la opción -n.
+
 cd solo con una ruta relativa o absoluta.
+
 pwd sin opciones.
+
 export sin opciones.
+
 unset sin opciones.
+
 env sin opciones o argumentos.
+
 exit sin opciones.
 *************************************************************************************************************************************************
 
