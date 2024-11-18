@@ -127,6 +127,8 @@ BASH manual https://www.academia.edu/33910321/Manual_0_6_MAS_COMPLEO_BASH
 
 GNU readline https://tiswww.case.edu/php/chet/readline/rltop.html
 
+Para consultar las funciones necesarias y sus librerias para importar en minishell.h https://man7.org/linux/man-pages/dir_section_3.html
+
 # Autores de este pedazo de tutorial, dos grandes
 Autores
 @Fefeco
