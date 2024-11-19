@@ -175,26 +175,33 @@ Como se explicó anteriormente, manejamos las funciones incorporadas almacenando
   		cmd->builtin(tools, cmd);
   
 # Las funciones incorporadas (según el tema) son:
-** cd	Cambia el directorio de trabajo del entorno de ejecución del shell actual y actualiza las variables de entorno PWDy OLDPWD.
-  Sin argumentos, cambia el directorio de trabajo al directorio de inicio.
-  -cambia el directorio al OLDPWD.
+** cd	
+	Cambia el directorio de trabajo del entorno de ejecución del shell actual y actualiza las variables de entorno PWDy OLDPWD.
+  	Sin argumentos, cambia el directorio de trabajo al directorio de inicio.
+  	-cambia el directorio al OLDPWD.
 
-** echo	Muestra una línea de texto.
-  Bandera opcional -n: no mostrar la nueva línea final.
+** echo	
+	Muestra una línea de texto.
+  	Bandera opcional -n: no mostrar la nueva línea final.
 
-** env	Muestra las variables de entorno
+** env	
+	Muestra las variables de entorno
 
-** exit	Finaliza el shell.
-  Acepta el argumento opcional n, que establece el estado de salida en n.
+** exit	
+	Finaliza el shell.
+  	Acepta el argumento opcional n, que establece el estado de salida en n.
 
-** export	Acepta argumentos name[=value].
-  Agrega nombre al entorno. Establece el valor de nombre en value.
-  Si no se proporciona ningún argumento, muestra una lista de variables exportadas.
+** export
+	Acepta argumentos name[=value].
+	Agrega nombre al entorno. Establece el valor de nombre en value.
+  	Si no se proporciona ningún argumento, muestra una lista de variables exportadas.
 
-** pwd	Muestra el directorio actual como una ruta absoluta.
+** pwd	
+	Muestra el directorio actual como una ruta absoluta.
 
-** unset	Acepta el argumento name.
-  Elimina la variable name del entorno.
+** unset
+	Acepta el argumento name.
+  	Elimina la variable name del entorno.
 
 # Ejecutor
 Cuando el analizador devuelve la t_simple_cmds lista a minishell_loop, se realiza una comprobación sencilla para determinar cuántos comandos hay, ya que son manejados por diferentes funciones. Sin embargo, con la excepción de unas pocas funciones integradas, los comandos son ejecutados en última instancia por la misma función handle_cmd, que encuentra y, si tiene éxito, ejecuta el comando.
