@@ -130,20 +130,14 @@ El analizador léxico
 
 El analizador léxico, también llamado tokenizador, toma como entrada la línea ingresada. Luego lee la línea palabra por palabra, utilizando espacios en blanco como delimitadores. Primero verifica si la palabra es un token o no, es decir: |, <, <<, >, o >>, y en caso contrario asume que es una palabra. Luego la agrega a la siguiente lista enlazada:
 
-** typedef struct s_lexer
-{
-
+	typedef struct s_lexer
+	{
 	char    	*str;
-	
  	t_tokens        token;
-	
  	int		i;
-	
  	struct s_lexer	*next;
-	
  	struct s_lexer	*prev;
-  
-}	t_lexer; 
+  	}	t_lexer; 
 
 
 Cada nodo contiene un char *que contiene la palabra o un t_token. También asignamos a cada nodo un índice para que podamos eliminarlos fácilmente más tarde.
@@ -152,24 +146,16 @@ Cada nodo contiene un char *que contiene la palabra o un t_token. También asign
 
 Luego, el analizador léxico se envía al analizador, que agrupa los distintos nodos en función de los tokens. Cada grupo se convierte en un comando.
 
-** typedef struct s_simple_cmds
-{
-
+	typedef struct s_simple_cmds
+	{
 	char                    **str;
-
  	int                     (*builtin)(t_tools *, struct s_simple_cmds *);
-	
  	int                     num_redirections;
-	
  	char                    *hd_file_name;
-	
  	t_lexer                 *redirections;
-	
  	struct s_simple_cmds	*next;
-	
- 	struct s_simple_cmds	*prev;
-
-}	t_simple_cmds;
+	struct s_simple_cmds	*prev;
+	}		t_simple_cmds;
 
 ![194295673-3c9e17c3-d5ab-40dc-82ef-72b909f4acb3](https://github.com/user-attachments/assets/2dd5b9e8-41a0-47d5-8b1a-c7e3e522b2d5)
 
@@ -180,15 +166,15 @@ analizador 001 El analizador toma la t_lexerlista (izquierda) y la convierte en 
 Para cada comando, primero comprueba si hay redirecciones, que almacena en la *redirectionslista enlazada, que contiene tanto el token como el nombre de archivo o delimitador en el caso de un documento heredado. Cuando se añaden los nodos a la *redirections lista, se eliminan de la lista del analizador léxico. A continuación, comprueba si la primera palabra es una función incorporada, en cuyo caso almacena un puntero de función a la función correspondiente, más sobre esto a continuación. Como las redirecciones se han eliminado de la lista del analizador léxico, el analizador puede combinar fácilmente todas las palabras restantes en una matriz 2D, que es un argumento ejecutivo obligatorio. También facilita el manejo de situaciones en las que las palabras pueden estar separadas por redirecciones, por ejemplo:
 
 cat > file -e
-Como >y file ya se eliminaron de la lista del analizador léxico cuando se agregaron a la lista de redirecciones, todo lo que queda es caty -e, que luego se pueden agregar fácilmente a una matriz.
+Como > y file ya se eliminaron de la lista del analizador léxico cuando se agregaron a la lista de redirecciones, todo lo que queda es caty -e, que luego se pueden agregar fácilmente a una matriz.
 
 Este proceso se repite hasta el final de la lista del analizador léxico.
 
 # Elementos incorporados
 Como se explicó anteriormente, manejamos las funciones incorporadas almacenando un puntero de función en el t_simple_cmds. Esto lo logramos enviando la primera palabra de un comando a una función builtin_arrque recorre una matriz estática de las diferentes funciones incorporadas. Si encuentra una función correspondiente, la devuelve al analizador; de lo contrario, devuelve NULL. Para mí, esta fue una forma de aprender sobre punteros de función, con los que nunca había trabajado antes. Además, al determinar la función incorporada en la etapa del analizador, simplifica enormemente el ejecutor, ya que ejecutar la función incorporada requiere solo dos líneas de código:
 
-if (cmd->builtin != NULL)
-  cmd->builtin(tools, cmd);
+	if (cmd->builtin != NULL)
+  	cmd->builtin(tools, cmd);
   
 # Las funciones incorporadas (según el tema) son:
 ** cd	Cambia el directorio de trabajo del entorno de ejecución del shell actual y actualiza las variables de entorno PWDy OLDPWD.
