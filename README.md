@@ -4,7 +4,6 @@
 A continuación se describe brevemente el funcionamiento del shell cuando lee y ejecuta un comando. Básicamente, el shell hace lo siguiente
 *******************************************************************************************************************************************
 
-
 1) Lee su entrada desde un archivo (ver Scripts de Shell), desde una cadena suministrada como argumento a la opción de invocación -c (ver Invocando Bash), o desde la terminal del usuario.
 
 2) Divide la entrada en palabras y operadores, obedeciendo las reglas de entrecomillado descritas en Entrecomillado. Estos tokens están separados por metacaracteres. La expansión de alias se realiza en este paso (ver Aliases).
@@ -20,7 +19,6 @@ A continuación se describe brevemente el funcionamiento del shell cuando lee y 
 7) Opcionalmente, espera a que el comando finalice y recoge su estado de salida (consulte Estado de salida).
 
 Enlaces y documentacion para revisar: https://www.gnu.org/software/bash/manual/bash.html#Shell-Operation
-
 
 
 # Minishell debe: 
@@ -132,12 +130,12 @@ El analizador léxico, también llamado tokenizador, toma como entrada la línea
 
 	typedef struct s_lexer
 	{
-	char    	*str;
- 	t_tokens        token;
- 	int		i;
- 	struct s_lexer	*next;
- 	struct s_lexer	*prev;
-  	}	t_lexer; 
+		char    	*str;
+ 		t_tokens        token;
+ 		int		i;
+ 		struct s_lexer	*next;
+ 		struct s_lexer	*prev;
+  	}			t_lexer; 
 
 
 Cada nodo contiene un char *que contiene la palabra o un t_token. También asignamos a cada nodo un índice para que podamos eliminarlos fácilmente más tarde.
@@ -148,14 +146,14 @@ Luego, el analizador léxico se envía al analizador, que agrupa los distintos n
 
 	typedef struct s_simple_cmds
 	{
-	char                    **str;
- 	int                     (*builtin)(t_tools *, struct s_simple_cmds *);
- 	int                     num_redirections;
- 	char                    *hd_file_name;
- 	t_lexer                 *redirections;
- 	struct s_simple_cmds	*next;
-	struct s_simple_cmds	*prev;
-	}		t_simple_cmds;
+		char                    **str;
+ 		int                     (*builtin)(t_tools *, struct s_simple_cmds *);
+ 		int                     num_redirections;
+ 		char                    *hd_file_name;
+ 		t_lexer                 *redirections;
+ 		struct s_simple_cmds	*next;
+		struct s_simple_cmds	*prev;
+	}				t_simple_cmds;
 
 ![194295673-3c9e17c3-d5ab-40dc-82ef-72b909f4acb3](https://github.com/user-attachments/assets/2dd5b9e8-41a0-47d5-8b1a-c7e3e522b2d5)
 
@@ -174,7 +172,7 @@ Este proceso se repite hasta el final de la lista del analizador léxico.
 Como se explicó anteriormente, manejamos las funciones incorporadas almacenando un puntero de función en el t_simple_cmds. Esto lo logramos enviando la primera palabra de un comando a una función builtin_arrque recorre una matriz estática de las diferentes funciones incorporadas. Si encuentra una función correspondiente, la devuelve al analizador; de lo contrario, devuelve NULL. Para mí, esta fue una forma de aprender sobre punteros de función, con los que nunca había trabajado antes. Además, al determinar la función incorporada en la etapa del analizador, simplifica enormemente el ejecutor, ya que ejecutar la función incorporada requiere solo dos líneas de código:
 
 	if (cmd->builtin != NULL)
-  	cmd->builtin(tools, cmd);
+  		cmd->builtin(tools, cmd);
   
 # Las funciones incorporadas (según el tema) son:
 ** cd	Cambia el directorio de trabajo del entorno de ejecución del shell actual y actualiza las variables de entorno PWDy OLDPWD.
@@ -232,22 +230,22 @@ Luego, el programa realiza un reinicio completo, liberando todos los nodos que a
 
 # Uso
 Clona el repositorio
-git clone ... minishell
+	git clone ... minishell
 Compila el proyecto con make
-make
+	make
 Como se menciona anteriormente, este proyecto requiere de la libreria readline. En caso de no tenerla instalada ejecuta:
 
 En sistemas basados en Debian/Ubuntu:
-sudo apt-get update
-sudo apt-get install libreadline-dev
+	sudo apt-get update
+	sudo apt-get install libreadline-dev
 
 En sistemas basados en Red Hat/Fedora:
-sudo yum install readline-devel
+	sudo yum install readline-devel
 
 En macOS (usando Homebrew):
-brew install readline
+	brew install readline
 Ejecuta la minishel
-./minishell
+	./minishell
 
 # Mapa mental (todo lo anterior en imagen)
 
