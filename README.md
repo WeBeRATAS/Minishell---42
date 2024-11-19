@@ -251,6 +251,11 @@ brew install readline
 Ejecuta la minishel
 ./minishell
 
+# Mapa mental (todo lo anterior en imagen)
+
+![144017004-aa68e8d7-5da7-4ece-afc6-b8ab100113df](https://github.com/user-attachments/assets/f0e748f6-9d5b-4637-950f-96f77d8c2cc2)
+
+
 # Documentación
 ***************************************
 BASH manual https://www.academia.edu/33910321/Manual_0_6_MAS_COMPLEO_BASH
