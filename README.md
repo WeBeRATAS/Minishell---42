@@ -97,8 +97,6 @@ Ejecuta el comando (consulte Ejecución de comandos).
 Opcionalmente, espera a que el comando finalice y recoge su estado de salida (consulte Estado de salida).
 
 
-Traducción realizada con la versión gratuita del traductor DeepL.com
-
 ![193665518-0c0c7fec-38a9-4f6c-91ca-fef606abfb0d](https://github.com/user-attachments/assets/080ed608-980c-4c97-875b-f51d5f63b6dd)
 
 # Lectura del input
@@ -132,14 +130,14 @@ El analizador léxico
 
 El analizador léxico, también llamado tokenizador, toma como entrada la línea ingresada. Luego lee la línea palabra por palabra, utilizando espacios en blanco como delimitadores. Primero verifica si la palabra es un token o no, es decir: |, <, <<, >, o >>, y en caso contrario asume que es una palabra. Luego la agrega a la siguiente lista enlazada:
 
-typedef struct s_lexer
+# typedef struct s_lexer
 {
 	char    	*str;
 	t_tokens        token;
 	int		i;
 	struct s_lexer	*next;
 	struct s_lexer	*prev;
-}	t_lexer;
+# }	t_lexer; 
 
 
 Cada nodo contiene un char *que contiene la palabra o un t_token. También asignamos a cada nodo un índice para que podamos eliminarlos fácilmente más tarde.
@@ -148,7 +146,7 @@ Cada nodo contiene un char *que contiene la palabra o un t_token. También asign
 
 Luego, el analizador léxico se envía al analizador, que agrupa los distintos nodos en función de los tokens. Cada grupo se convierte en un comando.
 
-typedef struct s_simple_cmds
+# typedef struct s_simple_cmds
 {
 	char                    **str;
 	int                     (*builtin)(t_tools *, struct s_simple_cmds *);
@@ -157,7 +155,7 @@ typedef struct s_simple_cmds
 	t_lexer                 *redirections;
 	struct s_simple_cmds	*next;
 	struct s_simple_cmds	*prev;
-}	t_simple_cmds;
+# }	t_simple_cmds;
 
 ![194295673-3c9e17c3-d5ab-40dc-82ef-72b909f4acb3](https://github.com/user-attachments/assets/2dd5b9e8-41a0-47d5-8b1a-c7e3e522b2d5)
 
