@@ -58,7 +58,7 @@ ctrl-C imprime una nueva entrada en una línea nueva.
 ctrl-D termina el shell.
 ctrl-\ no hace nada.
 
-Deberá implementar los built-ins:
+# Deberá implementar los built-ins:
 *****************************************
 echo con la opción -n.
 
