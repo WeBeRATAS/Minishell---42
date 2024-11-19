@@ -161,14 +161,14 @@ typedef struct s_simple_cmds
 
 ![194295673-3c9e17c3-d5ab-40dc-82ef-72b909f4acb3](https://github.com/user-attachments/assets/2dd5b9e8-41a0-47d5-8b1a-c7e3e522b2d5)
 
-Lo primero que hace el analizador es recorrer la lista del analizador léxico hasta que encuentra una tubería. Luego, toma todos los nodos anteriores a la tubería como un solo comando y crea un nodo en la t_simple_cmdsestructura. Si no encuentra una tubería, toma todos los nodos (restantes) como un solo comando.
+Lo primero que hace el analizador es recorrer la lista del analizador léxico hasta que encuentra una tubería (pipe). Luego, toma todos los nodos anteriores a la tubería como un solo comando y crea un nodo en la t_simple_cmds estructura. Si no encuentra una tubería, toma todos los nodos (restantes) como un solo comando.
 
-analizador 001 El analizador toma la t_lexerlista (izquierda) y la convierte en la t_simple_cmdslista (derecha)
+analizador 001 El analizador toma la t_lexerlista (izquierda) y la convierte en la t_simple_cmds lista (derecha)
 
-Para cada comando, primero comprueba si hay redirecciones, que almacena en la *redirectionslista enlazada, que contiene tanto el token como el nombre de archivo o delimitador en el caso de un documento heredado. Cuando se añaden los nodos a la *redirectionslista, se eliminan de la lista del analizador léxico. A continuación, comprueba si la primera palabra es una función incorporada, en cuyo caso almacena un puntero de función a la función correspondiente, más sobre esto a continuación. Como las redirecciones se han eliminado de la lista del analizador léxico, el analizador puede combinar fácilmente todas las palabras restantes en una matriz 2D, que es un argumento ejecutivo obligatorio. También facilita el manejo de situaciones en las que las palabras pueden estar separadas por redirecciones, por ejemplo:
+Para cada comando, primero comprueba si hay redirecciones, que almacena en la *redirectionslista enlazada, que contiene tanto el token como el nombre de archivo o delimitador en el caso de un documento heredado. Cuando se añaden los nodos a la *redirections lista, se eliminan de la lista del analizador léxico. A continuación, comprueba si la primera palabra es una función incorporada, en cuyo caso almacena un puntero de función a la función correspondiente, más sobre esto a continuación. Como las redirecciones se han eliminado de la lista del analizador léxico, el analizador puede combinar fácilmente todas las palabras restantes en una matriz 2D, que es un argumento ejecutivo obligatorio. También facilita el manejo de situaciones en las que las palabras pueden estar separadas por redirecciones, por ejemplo:
 
 cat > file -e
-Como >y fileya se eliminaron de la lista del analizador léxico cuando se agregaron a la lista de redirecciones, todo lo que queda es caty -e, que luego se pueden agregar fácilmente a una matriz.
+Como >y file ya se eliminaron de la lista del analizador léxico cuando se agregaron a la lista de redirecciones, todo lo que queda es caty -e, que luego se pueden agregar fácilmente a una matriz.
 
 Este proceso se repite hasta el final de la lista del analizador léxico.
 
@@ -207,7 +207,7 @@ Cuando el analizador devuelve la t_simple_cmds lista a minishell_loop, se realiz
 Antes de que se maneje un nodo t_simple_cmds, se lo expande. El expansor toma las variables, identificadas por $, y las reemplaza con su valor de las variables de entorno. De modo que $USERse convierte en mgraaf, y $?se reemplaza con el código de salida.
 
 # Heredoc
-Antes de crear un proceso secundario, el proceso principal ejecuta heredocs. Nosotros manejamos heredocs creando un archivo temporal para escribir la entrada. El nombre del archivo se almacena en el t_simple_cmdsnodo relacionado para que pueda usarse para reemplazar STDIN. Si hay varios heredocs en un solo t_simple_cmdsnodo, entonces el nombre del archivo que se almacena finalmente será el del último heredoc. El uso de un archivo tiene limitaciones y problemas de seguridad, sin embargo, sentimos que era la forma más simple de lidiar con esto y es similar a cómo lo hace bash.
+Antes de crear un proceso secundario, el proceso principal ejecuta heredocs. Nosotros manejamos heredocs creando un archivo temporal para escribir la entrada. El nombre del archivo se almacena en el t_simple_cmds nodo relacionado para que pueda usarse para reemplazar STDIN. Si hay varios heredocs en un solo t_simple_cmds nodo, entonces el nombre del archivo que se almacena finalmente será el del último heredoc. El uso de un archivo tiene limitaciones y problemas de seguridad, sin embargo, sentimos que era la forma más simple de lidiar con esto y es similar a cómo lo hace bash.
 
 # Comando único
 Al igual que en bash, los comandos integrados, específicamente cd, exit, export, y unsetno se pueden ejecutar en un proceso separado, ya que entonces la variable ambiental no se puede alterar adecuadamente. Si solo hay un comando, y es uno de los comandos integrados mencionados anteriormente, se ejecuta en el proceso padre y la función regresa a minishell_loop. Si el comando no es un comando integrado, la función de comando único crea un nuevo proceso y envía el comando a handle_cmd.
@@ -267,7 +267,7 @@ Para consultar las funciones necesarias y sus librerias para importar en minishe
 
 Documentacion estructura minishell: https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf
 
-# Autores de este pedazo de tutorial, dos grandes
+# Copiado e inspirado este pedazo de tutorial, de dos grandes entre otros:
 Autores
 @Fefeco
 @Daviichii89
