@@ -272,3 +272,7 @@ Autores
 @Fefeco
 @Daviichii89
 
+# Más resources
+https://github.com/karisti/42_minishell?tab=readme-ov-file#resources
+
+
